@@ -6,7 +6,7 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:40:20 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/20 19:24:37 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/22 12:53:52 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,25 @@
 #include "libft/libft.h"
 
 /*Handle the client signals*/
+/* ^ -> compare two bits if they are the same = 1, else = 0*/
+/* | -> compare two bits if one of them is 1 then = 1, else = 0*/
 
 void	ft_signal_handler(int signum)
 {
-	static char		c;
-	static int		bits;
+	static char		c = 0xFF;
+	static int		bits = 0;
 
-	c = 0;
-	bits = 0xFF;
 	if (signum == SIGUSR1)
 	{
-		ft_printf("0");
-		c ^= 0x80 >> bits;
+		c ^= 128 >> bits;
 	}
 	else if (signum == SIGUSR2)
 	{
-		ft_printf("1");
-		c |= 0x80 >> bits;
+		c |= 128 >> bits;
 	}
-	bits++;
-	if (bits == 8)
+	if (++bits == 8)
 	{
-		ft_printf("-> %c\n", c);
+		ft_printf("%i\n", c);
 		bits = 0;
 		c = 0xFF;
 	}
