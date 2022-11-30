@@ -6,55 +6,45 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:40:20 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/22 12:53:52 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:13:13 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "libft/libft.h"
 
-/*Handle the client signals*/
-/* ^ -> compare two bits if they are the same = 1, else = 0*/
-/* | -> compare two bits if one of them is 1 then = 1, else = 0*/
-
-void	ft_signal_handler(int signum)
+// | is 1 When one bit is 1.
+void	ft_signal_handler(int signum, siginfo_t *info, void *context)
 {
-	static char		c = 0xFF;
-	static int		bits = 0;
+	static char	c;
+	static int	bits = 0;
 
+	(void)info;
+	(void)context;
 	if (signum == SIGUSR1)
-	{
-		c ^= 128 >> bits;
-	}
-	else if (signum == SIGUSR2)
-	{
-		c |= 128 >> bits;
-	}
+		c |= (1 << bits);
+	kill(info->si_pid, SIGUSR2);
 	if (++bits == 8)
 	{
-		ft_printf("%i\n", c);
+		ft_printf("%c", c);
 		bits = 0;
-		c = 0xFF;
+		c = 0;
 	}
-}
-
-/* Start the server process printing the PID
-** and recieve the client signals*/
-
-void	ft_connect_client(void)
-{
-	pid_t	pid;
-
-	pid = getpid();
-	ft_printf("PID: %d\n", pid);
-	signal(SIGUSR1, ft_signal_handler);
-	signal(SIGUSR2, ft_signal_handler);
-	while (1)
-		pause();
 }
 
 int	main(void)
 {
-	ft_connect_client();
+	int					pid;
+	struct sigaction	s_signal;
+
+	pid = getpid();
+	ft_printf(VERDE_T "PID" AMARILLO_T " -> " CYAN_T "%i\n" RESET_COLOR, pid);
+	s_signal.sa_sigaction = ft_signal_handler;
+	s_signal.sa_flags = SA_SIGINFO;
+	ft_printf(MAGENTA_T "Waiting for message ...\n" RESET_COLOR);
+	sigaction(SIGUSR1, &s_signal, 0);
+	sigaction(SIGUSR2, &s_signal, 0);
+	while (1)
+		pause();
 	return (0);
 }

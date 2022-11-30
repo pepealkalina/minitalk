@@ -6,7 +6,7 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 10:58:34 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/20 11:56:47 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:32:11 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,23 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
+# define NEGRO_T    "\x1b[30m"
+# define NEGRO_F    "\x1b[40m"
+# define ROJO_T     "\x1b[31m"
+# define ROJO_F     "\x1b[41m"
+# define VERDE_T    "\x1b[32m"
+# define VERDE_F    "\x1b[42m"
+# define AMARILLO_T "\x1b[33m"
+# define AMARILLO_F "\x1b[43m"
+# define AZUL_T     "\x1b[34m"
+# define AZUL_F     "\x1b[44m"
+# define MAGENTA_T  "\x1b[35m"
+# define MAGENTA_F  "\x1b[45m"
+# define CYAN_T     "\x1b[36m"
+# define CYAN_F     "\x1b[46m"
+# define BLANCO_T   "\x1b[37m"
+# define BLANCO_F   "\x1b[47m"
+# define RESET_COLOR "\x1b[0m"
 
 typedef struct s_list
 {
@@ -29,7 +46,7 @@ int			ft_isalpha(int argument);
 int			ft_isalnum(int argument);
 int			ft_isascii(int argument);
 int			ft_isprint(int argument);
-int			ft_isdigit(int argument);
+int			ft_isdigit(char *argument);
 size_t		ft_strlen(const char *str);
 int			ft_toupper(int chara);
 int			ft_tolower(int chara);

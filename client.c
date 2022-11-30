@@ -6,54 +6,72 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:40:13 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/22 13:00:56 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:35:42 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "libft/libft.h"
 
-void	ft_send_binary(const char c, int pid)
-{
-	int	shift;
+int	g_len;
 
-	shift = -1;
-	while (++shift < 8)
+void	ft_confirm(int signum)
+{
+	static int	i = 0;
+	static int	chara = 0;
+
+	if (signum == SIGUSR2)
 	{
-		if (c & 0x80 >> shift)
+		i++;
+		if (i % 8 == 0)
 		{
-			if (kill(pid, SIGUSR2) == -1)
-				exit(1);
+			chara++;
+			ft_printf(VERDE_T "character recived %i\n", chara);
 		}
+	}
+
+}
+
+void	ft_send_binary(char c, int pid)
+{
+	int	bit;
+
+	bit = 0;
+	while (bit < 8)
+	{
+		if ((c & (1 << bit)) != 0)
+			kill(pid, SIGUSR1);
 		else
-		{
-			if (kill(pid, SIGUSR1) == -1)
-				exit(1);
-		}
-		usleep(3);
+			kill(pid, SIGUSR2);
+		usleep(100);
+		bit++;
 	}
 }
 
-int	ft_connect_server(char const *strpid, int argc)
+int	main(int argc, char *argv[])
 {
-	int	pid;
+	int		pid;
+	int		i;
+	char	*conection;
 
+	signal(SIGUSR1, ft_confirm);
+	signal(SIGUSR2, ft_confirm);
 	if (argc != 3)
 	{
-		ft_printf("Invalid arguments");
+		ft_printf(ROJO_T "Invalid arguments\n");
+		ft_printf(VERDE_T "Try ./client <PID> <MESSAGE\n>");
 		exit(EXIT_FAILURE);
 	}
-	pid = ft_atoi(strpid);
-	kill(pid, SIGUSR1);
-	return (pid);
-}
-
-int	main(int argc, char const *argv[])
-{
-	int	i;
-
-	i = 0;
-	while (i++ <= ft_strlen(argv[2]))
-		ft_send_binary(argv[2][i], ft_connect_server(argv[1], argc));
+	if (ft_isdigit(argv[1]) == -1)
+	{
+		ft_printf(ROJO_T "Invalid arguments\n");
+		ft_printf(VERDE_T "Try ./client <PID> <MESSAGE>\n");
+	}
+	else
+		pid = ft_atoi(argv[1]);
+	g_len = ft_strlen(argv[2]);
+	while (argv[2][i] != '\0')
+		ft_send_binary(argv[2][i++], pid);
+	ft_send_binary('\n', pid);
 	return (0);
 }
