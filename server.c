@@ -6,7 +6,7 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:40:20 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/30 14:54:21 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:01:09 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	ft_signal_handler(int signum, siginfo_t *info, void *context)
 	(void)context;
 	if (signum == SIGUSR1)
 		c |= (1 << bits);
-	kill(info->si_pid, SIGUSR2);
 	if (++bits == 8)
 	{
 		ft_printf("%c", c);
 		bits = 0;
 		c = 0;
+		kill(info->si_pid, SIGUSR2);
 	}
 }
 

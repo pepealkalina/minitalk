@@ -6,7 +6,7 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:40:13 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/30 14:54:19 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:02:51 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,11 @@
 void	ft_confirm(int signum)
 {
 	static int	i = 0;
-	static int	chara = 0;
 
 	if (signum == SIGUSR2)
 	{
 		i++;
-		if (i % 8 == 0)
-		{
-			chara++;
-			ft_printf(VERDE_T "character recived %i\n", chara);
-		}
+		ft_printf(VERDE_T "received chara %i\n" RESET_COLOR, i);
 	}
 }
 
