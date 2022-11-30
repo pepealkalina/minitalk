@@ -6,14 +6,12 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:40:13 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/30 14:35:42 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:50:36 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "libft/libft.h"
-
-int	g_len;
 
 void	ft_confirm(int signum)
 {
@@ -29,7 +27,6 @@ void	ft_confirm(int signum)
 			ft_printf(VERDE_T "character recived %i\n", chara);
 		}
 	}
-
 }
 
 void	ft_send_binary(char c, int pid)
@@ -69,7 +66,6 @@ int	main(int argc, char *argv[])
 	}
 	else
 		pid = ft_atoi(argv[1]);
-	g_len = ft_strlen(argv[2]);
 	while (argv[2][i] != '\0')
 		ft_send_binary(argv[2][i++], pid);
 	ft_send_binary('\n', pid);
