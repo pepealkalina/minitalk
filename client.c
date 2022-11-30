@@ -6,7 +6,7 @@
 /*   By: preina-g <preina-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:40:13 by preina-g          #+#    #+#             */
-/*   Updated: 2022/11/30 15:02:51 by preina-g         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:12:46 by preina-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ void	ft_confirm(int signum)
 	if (signum == SIGUSR2)
 	{
 		i++;
-		ft_printf(VERDE_T "received chara %i\n" RESET_COLOR, i);
 	}
+	else
+		exit(ft_printf(VERDE_T "received chara %i\n" RESET_COLOR, i));
 }
 
 void	ft_send_binary(char c, int pid)
@@ -64,5 +65,6 @@ int	main(int argc, char *argv[])
 	while (argv[2][i] != '\0')
 		ft_send_binary(argv[2][i++], pid);
 	ft_send_binary('\n', pid);
+	ft_send_binary('\0', pid);
 	return (0);
 }
